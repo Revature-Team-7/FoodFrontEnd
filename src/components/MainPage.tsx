@@ -1,4 +1,5 @@
-import react, { useState } from "react";
+import axios from "axios";
+import react, { useRef, useState } from "react";
 
 interface IProps {
 
@@ -12,8 +13,9 @@ export const MainPage:React.FC = (props:IProps) => {
     const [isLDinner, setIsLDinner] = useState(false);
     const [isSpinner, setSpinner] = useState(false);
 
-    let foodLink, foodName = "";
-    let foodImg = "https://thumbs.gfycat.com/DarlingPolishedHarrierhawk-small.gif";
+    const [foodLink, setFoodLink] = useState("");
+    const [foodName, setFoodName] = useState("");
+    const [foodImg, setFoodImg] = useState("https://thumbs.gfycat.com/DarlingPolishedHarrierhawk-small.gif");
 
     const Home = () => {
         setIsHome(true);
@@ -24,32 +26,64 @@ export const MainPage:React.FC = (props:IProps) => {
     }
 
     const BreakfastBtn = () => {
-        setIsBreakfast(true);
 
         if(isHome)
         {
-            //api call 1
+            if(isSpinner == false)
+            {
+                setSpinner(true);
+                axios.get("http://localhost:5000/home/breakfast")
+                .then((response)=>{
+                    console.log(response.data);
+                    const randIndex = Math.floor(Math.random()*response.data.length);
+                    const data = response.data[randIndex];
 
-            /*
-                const randIndex = Math.round(Math.random()*reponse.data.length);
-    
-                const data = response.data[randIndex];
+                    setFoodName(data.foodName);
 
-                foodName = data.name;
-
-                if(data.url != null)
-                {
-                    foodUrl = data.url;
-                }
-                if(data.link != null)
-                {
-                    foodLink = data.link;
-                }
-            */
+                    if(data.img_url != null)
+                    {
+                        setFoodImg(data.img_url);
+                    }
+                    if(data.recipe != null)
+                    {
+                        setFoodLink(data.recipe);
+                    }
+                    setSpinner(false);
+                    setIsBreakfast(true);
+                })
+                .catch((e)=>{
+                    setSpinner(false);
+                    alert(e);
+                })
+            }
+            
         }
         else if(isGoOut)
         {
-            //api call 2
+            if(isSpinner == false)
+            {
+                setSpinner(true);
+                axios.get("http://localhost:5000/goOut/breakfast")
+                .then((response)=>{
+                    console.log(response.data);
+                    const randIndex = Math.floor(Math.random()*response.data.length);
+                    console.log(randIndex);
+                    const data = response.data[randIndex];
+
+                    setFoodName(data.restaurantName);
+
+                    if(data.imgUrl != null)
+                    {
+                        setFoodImg(data.imgUrl);
+                    }
+                    setSpinner(false);
+                    setIsBreakfast(true);
+                })
+                .catch((e)=>{
+                    setSpinner(false);
+                    alert(e);
+                })
+            }
         }
     }
 
@@ -58,11 +92,59 @@ export const MainPage:React.FC = (props:IProps) => {
 
         if(isHome)
         {
-            //api call 1
+            if(isSpinner == false)
+            {
+                setSpinner(true);
+                axios.get("http://localhost:5000/home/dinner")
+                .then((response)=>{
+                    console.log(response.data);
+                    const randIndex = Math.floor(Math.random()*response.data.length);
+                    const data = response.data[randIndex];
+
+                    setFoodName(data.foodName);
+
+                    if(data.img_url != null)
+                    {
+                        setFoodImg(data.img_url);
+                    }
+                    if(data.recipe != null)
+                    {
+                        setFoodLink(data.recipe);
+                    }
+                    setSpinner(false);
+                    setIsLDinner(true);
+                })
+                .catch((e)=>{
+                    setSpinner(false);
+                    alert(e);
+                })
+            }
         }
         else if(isGoOut)
         {
-            //api call 2
+            if(isSpinner == false)
+            {
+                setSpinner(true);
+                axios.get("http://localhost:5000/goOut/dinner")
+                .then((response)=>{
+                    console.log(response.data);
+                    const randIndex = Math.floor(Math.random()*response.data.length);
+                    const data = response.data[randIndex];
+
+                    setFoodName(data.restaurantName);
+
+                    if(data.imgUrl != null)
+                    {
+                        setFoodImg(data.imgUrl);
+                    }
+                    setSpinner(false);
+                    setIsLDinner(true);
+                })
+                .catch((e)=>{
+                    setSpinner(false);
+                    alert(e);
+                })
+            }
         }
     }
 
@@ -84,6 +166,9 @@ export const MainPage:React.FC = (props:IProps) => {
             setIsLDinner(false);
         }
         
+        setFoodImg("");
+        setFoodLink("");
+        setFoodName("");
     }
 
     return(
@@ -100,13 +185,13 @@ export const MainPage:React.FC = (props:IProps) => {
                     </div>
 
                     <div className="row justify-content-center" style={{marginTop: 15}}>
-                        <div className="col-4" style={{textAlign:"center"}}>
+                        <div className="col-3" style={{textAlign:"center"}}>
                             <button className="pageBtn" onClick={Home}>Home</button>
                         </div> 
-                        <div className="col-4" style={{textAlign:"center"}}>
+                        <div className="col-1" style={{textAlign:"center"}}>
                             <p style={{}}>OR</p>
                         </div>
-                        <div className="col-4" style={{textAlign:"center"}}>
+                        <div className="col-3" style={{textAlign:"center"}}>
                             <button className="pageBtn" onClick={GoOut}>Go Out</button>
                         </div> 
                     </div>
@@ -123,13 +208,13 @@ export const MainPage:React.FC = (props:IProps) => {
                         </div>
 
                         <div className="row justify-content-center" style={{marginTop: 40}}>
-                            <div className="col-4" style={{textAlign:"center"}}>
+                            <div className="col-3" style={{textAlign:"center"}}>
                                 <button className="pageBtn" onClick={BreakfastBtn}>Breakfast</button>
                             </div> 
-                            <div className="col-4" style={{textAlign:"center"}}>
+                            <div className="col-1" style={{textAlign:"center"}}>
                                 <p style={{}}>OR</p>
                             </div>
-                            <div className="col-4" style={{textAlign:"center"}}>
+                            <div className="col-3" style={{textAlign:"center"}}>
                                 <button className="pageBtn" onClick={LDinnerBtn}>Lunch / Dinner</button>
                             </div>
                         </div>
@@ -170,9 +255,14 @@ export const MainPage:React.FC = (props:IProps) => {
                                 </div>
                             }
                             
-                            <div className="row justify-content-center">
-                                <a href={foodLink}>Link to recipe (Click Me)</a>
-                            </div>
+                            {foodLink != "null" ? 
+                                <div className="row justify-content-center">
+                                    <a href={foodLink}>Link to recipe (Click Me)</a>
+                                </div>
+                            :
+                                <></>
+                            }
+                            
 
                             <div className="row justify-content-center">
                                 <button className="resetBtn" 
