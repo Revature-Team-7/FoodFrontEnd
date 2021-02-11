@@ -5,9 +5,9 @@ import { MainPage } from './components/MainPage';
 
 function App() {
   return (
-    <>
+    <div className="wholePage">
       <MainPage/>
-    </>
+    </div>
   );
 }
 
