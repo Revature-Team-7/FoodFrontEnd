@@ -10,7 +10,10 @@ export const MainPage:React.FC = (props:IProps) => {
     const [isGoOut, setIsGoOut] = useState(false);
     const [isBreakfast, setIsBreakfast] = useState(false);
     const [isLDinner, setIsLDinner] = useState(false);
-    const idk = "";
+    const [isSpinner, setSpinner] = useState(false);
+
+    let foodLink, foodName = "";
+    let foodImg = "https://thumbs.gfycat.com/DarlingPolishedHarrierhawk-small.gif";
 
     const Home = () => {
         setIsHome(true);
@@ -26,6 +29,23 @@ export const MainPage:React.FC = (props:IProps) => {
         if(isHome)
         {
             //api call 1
+
+            /*
+                const randIndex = Math.round(Math.random()*reponse.data.length);
+    
+                const data = response.data[randIndex];
+
+                foodName = data.name;
+
+                if(data.url != null)
+                {
+                    foodUrl = data.url;
+                }
+                if(data.link != null)
+                {
+                    foodLink = data.link;
+                }
+            */
         }
         else if(isGoOut)
         {
@@ -79,15 +99,15 @@ export const MainPage:React.FC = (props:IProps) => {
                         <h4>Let us decide....</h4>
                     </div>
 
-                    <div className="row justify-content-center">
-                        <div className="col-4">
-                            <button onClick={Home}>Home</button>
+                    <div className="row justify-content-center" style={{marginTop: 15}}>
+                        <div className="col-4" style={{textAlign:"center"}}>
+                            <button className="pageBtn" onClick={Home}>Home</button>
                         </div> 
-                        <div className="col-4">
+                        <div className="col-4" style={{textAlign:"center"}}>
                             <p style={{}}>OR</p>
                         </div>
-                        <div className="col-4">
-                            <button onClick={GoOut}>Go Out</button>
+                        <div className="col-4" style={{textAlign:"center"}}>
+                            <button className="pageBtn" onClick={GoOut}>Go Out</button>
                         </div> 
                     </div>
                 </div>
@@ -95,50 +115,63 @@ export const MainPage:React.FC = (props:IProps) => {
 
             {isHome || isGoOut ?
             <>
-                <div className="upGrad1"></div>
-                <div className="secondPage">
+                <div className="upGrad1 pageAni"></div>
+                <div className="secondPage pageAni">
                     <div className="container">
                         <div className="row justify-content-center">
                             <h3>Time of Day..?</h3>
                         </div>
 
-                        <div className="row justify-content-center">
-                            <div className="col-4">
-                                <button onClick={BreakfastBtn}>Breakfast</button>
+                        <div className="row justify-content-center" style={{marginTop: 40}}>
+                            <div className="col-4" style={{textAlign:"center"}}>
+                                <button className="pageBtn" onClick={BreakfastBtn}>Breakfast</button>
                             </div> 
-                            <div className="col-4">
+                            <div className="col-4" style={{textAlign:"center"}}>
                                 <p style={{}}>OR</p>
                             </div>
-                            <div className="col-4">
-                                <button onClick={LDinnerBtn}>Lunch / Dinner</button>
+                            <div className="col-4" style={{textAlign:"center"}}>
+                                <button className="pageBtn" onClick={LDinnerBtn}>Lunch / Dinner</button>
                             </div>
                         </div>
+                        {isSpinner ? 
+                            <div className="row justify-content-center">
+                                <p>Loading...</p>
+                            </div>
+                        :
+                         <></>
+                        }
+                        
                     </div>
                 </div>
-                </>
+            </>
             :
                 <></>
             }
 
             {(isBreakfast || isLDinner) && isHome ?
                 <>
-                    <div className="upGrad2"></div>
-                    <div className="thirdPage">
+                    <div className="upGrad2 pageAni"></div>
+                    <div className="thirdPage pageAni">
                         <div className="container">
                             <div className="row justify-content-center">
                                 <h3>Data:</h3>
                             </div>
 
                             <div className="row justify-content-center">
-                                <p style={{marginTop: 20, textAlign: "left"}}>Your meal:</p>
+                                <p style={{marginTop: 20, textAlign: "left"}}>Your meal: {foodName}</p>
                             </div>
 
+                            {foodImg === "" ? 
+                                <></>
+                            :
+                                <div className="row justify-content-center">
+                                    <img className="foodImg" 
+                                    src={foodImg} alt="delicious pic"></img>
+                                </div>
+                            }
+                            
                             <div className="row justify-content-center">
-                                <img src={idk} alt="delicious pic"></img>
-                            </div>
-
-                            <div className="row justify-content-center">
-                                <a href={idk}>Link to recipe (Click Me)</a>
+                                <a href={foodLink}>Link to recipe (Click Me)</a>
                             </div>
 
                             <div className="row justify-content-center">
@@ -154,20 +187,25 @@ export const MainPage:React.FC = (props:IProps) => {
 
             {(isBreakfast || isLDinner) && isGoOut ?
                 <>
-                    <div className="upGrad2"></div>
-                    <div className="thirdPage">
+                    <div className="upGrad2 pageAni"></div>
+                    <div className="thirdPage pageAni">
                         <div className="container">
                             <div className="row justify-content-center">
                                 <h3>Data:</h3>
                             </div>
 
                             <div className="row justify-content-center">
-                                <p style={{marginTop: 20, textAlign: "left"}}>Restaurant Name: {idk}</p>
+                                <p style={{marginTop: 20, textAlign: "left"}}>Restaurant Name: {foodName}</p>
                             </div>
 
-                            <div className="row justify-content-center">
-                                <img src={idk} alt="restaurant pic"></img>
-                            </div>
+                            {foodImg === "" ? 
+                                <></>
+                            :
+                                <div className="row justify-content-center">
+                                    <img className="foodImg"
+                                    src={foodImg} alt="delicious pic"></img>
+                                </div>
+                            }
 
                             <div className="row justify-content-center">
                                 <button className="resetBtn" 
