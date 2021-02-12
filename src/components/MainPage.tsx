@@ -68,7 +68,6 @@ export const MainPage:React.FC = (props:IProps) => {
                 .then((response)=>{
 
                     const randIndex = Math.floor(Math.random()*response.data.length);
-                    console.log(randIndex);
                     const data = response.data[randIndex];
 
                     setFoodName(data.restaurantName);
@@ -298,7 +297,7 @@ export const MainPage:React.FC = (props:IProps) => {
                     <div className={`thirdPage pageAni ${isSlidingOut}`}>
                         <div className="container">
                             <div className="row justify-content-center">
-                                <h3>Your restaurant:</h3>
+                                <h3 style={{marginTop:10}}>Your restaurant:</h3>
                             </div>
 
                             <div className="row justify-content-center">
