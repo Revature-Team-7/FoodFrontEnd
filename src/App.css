@@ -1,12 +1,31 @@
 .wholePage {
+  font-family: regular;
   height:100vh;
   background-color: #66c9b0;
+}
+
+@font-face {
+  font-family: regular;
+  src: url(Sarabun-Bold.ttf);
+}
+
+.title {
+  margin-top: 15px;
+  text-align:"center";
+  font-weight: "bold";
+  font-family: fancy;
+  font-size: 70px;
+}
+
+@font-face {
+  font-family: fancy;
+  src: url(Lobster-Regular.ttf);
 }
 
 .upGrad1 {
   z-index: 4;
   position: absolute;
-  top:10vh;
+  top:9vh;
   width: 100%;
   height: 5vh;
   background-image: linear-gradient(0deg, rgb(110, 74, 26), #00000000);
@@ -38,10 +57,25 @@
   100% {transform: translateY(0%);}
 }
 
+.leave {
+  animation-name: slideOut;
+  animation-duration: 0.4s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+}
+
+@keyframes slideOut {
+  0% {transform: translateY(0);}
+
+  80% {transform: translateY(100vh);}
+  
+  100% {transform: translateY(100vh);}
+}
+
 .secondPage {
   z-index: 5;
   position: absolute;
-  top:13vh;
+  top:12vh;
   width: 100%;
   height: 100vh;
   background-color: #c9aa66;
@@ -61,7 +95,7 @@
   border: 0px;
   margin-top: 20px;
   border-radius: 20px;
-  padding: 20px;
+  padding: 13px;
   color: white;
   background-color: maroon;
 }
@@ -70,10 +104,74 @@
   max-width: 300px; 
 }
 
-.pageBtn {
-  padding: 30px;
+.pageBtnL {
+  position: relative;
+  padding: 20px 30px;
+  font-size: 25px;
   color: white;
   background-color: #0f4147;
   border: 0px;
   border-radius: 30px;
+  animation: buttonL 1s ease-in-out 0s infinite;
+}
+
+@keyframes buttonL {
+  0% {transform: translateY(-3px);}
+
+  50% {transform: translateY(3px);}
+
+  100% {transform: translateY(-3px);}
+}
+
+.pageBtnR {
+  position:relative;
+  padding: 20px 30px;
+  font-size: 25px;
+  color: white;
+  background-color: #0f4147;
+  border: 0px;
+  border-radius: 30px;
+  animation: buttonR 1s ease-in-out 0s infinite;
+}
+
+@keyframes buttonR {
+  0% {transform: translateY(3px);}
+
+  50% {transform: translateY(-3px);}
+
+  100% {transform: translateY(3px);}
+}
+
+.shadowR {
+  margin: auto;
+  margin-top: 10px;
+  height: 10px;
+  width: 120px;
+  background-image: radial-gradient(rgb(19, 43, 38), #00000000, #00000000);
+  animation: shadowR 1s ease-in-out 0s infinite;
+}
+
+@keyframes shadowR {
+  0% {transform: scaleX(1.3);}
+
+  50% {transform: scaleX(1);}
+
+  100% {transform: scaleX(1.3);}
+}
+
+.shadowL {
+  margin: auto;
+  margin-top: 10px;
+  height: 10px;
+  width: 120px;
+  background-image: radial-gradient(rgb(19, 43, 38), #00000000, #00000000);
+  animation: shadowL 1s ease-in-out 0s infinite;
+}
+
+@keyframes shadowL {
+  0% {transform: scaleX(1);}
+
+  50% {transform: scaleX(1.3);}
+
+  100% {transform: scaleX(1);}
 }

@@ -12,6 +12,7 @@ export const MainPage:React.FC = (props:IProps) => {
     const [isBreakfast, setIsBreakfast] = useState(false);
     const [isLDinner, setIsLDinner] = useState(false);
     const [isSpinner, setSpinner] = useState(false);
+    const [isSlidingOut, setSliding] = useState("");
 
     const [foodLink, setFoodLink] = useState("");
     const [foodName, setFoodName] = useState("");
@@ -29,12 +30,12 @@ export const MainPage:React.FC = (props:IProps) => {
 
         if(isHome)
         {
-            if(isSpinner == false)
+            if(isSpinner == false && isSlidingOut != "leave")
             {
                 setSpinner(true);
                 axios.get("http://localhost:5000/home/breakfast")
                 .then((response)=>{
-                    console.log(response.data);
+
                     const randIndex = Math.floor(Math.random()*response.data.length);
                     const data = response.data[randIndex];
 
@@ -60,12 +61,12 @@ export const MainPage:React.FC = (props:IProps) => {
         }
         else if(isGoOut)
         {
-            if(isSpinner == false)
+            if(isSpinner == false && isSlidingOut != "leave")
             {
                 setSpinner(true);
                 axios.get("http://localhost:5000/goOut/breakfast")
                 .then((response)=>{
-                    console.log(response.data);
+
                     const randIndex = Math.floor(Math.random()*response.data.length);
                     console.log(randIndex);
                     const data = response.data[randIndex];
@@ -88,16 +89,15 @@ export const MainPage:React.FC = (props:IProps) => {
     }
 
     const LDinnerBtn = () => {
-        setIsLDinner(true);
 
         if(isHome)
         {
-            if(isSpinner == false)
+            if(isSpinner == false && isSlidingOut != "leave")
             {
                 setSpinner(true);
                 axios.get("http://localhost:5000/home/dinner")
                 .then((response)=>{
-                    console.log(response.data);
+
                     const randIndex = Math.floor(Math.random()*response.data.length);
                     const data = response.data[randIndex];
 
@@ -120,14 +120,14 @@ export const MainPage:React.FC = (props:IProps) => {
                 })
             }
         }
-        else if(isGoOut)
+        else if(isGoOut && isSlidingOut != "leave")
         {
             if(isSpinner == false)
             {
                 setSpinner(true);
                 axios.get("http://localhost:5000/goOut/dinner")
                 .then((response)=>{
-                    console.log(response.data);
+
                     const randIndex = Math.floor(Math.random()*response.data.length);
                     const data = response.data[randIndex];
 
@@ -149,50 +149,59 @@ export const MainPage:React.FC = (props:IProps) => {
     }
 
     const Reset = () => {
-        if(isHome)
-        {
-            setIsHome(false);
-        }
-        if(isGoOut)
-        {
-            setIsGoOut(false);
-        }
-        if(isBreakfast)
-        {
-            setIsBreakfast(false);
-        }
-        if(isLDinner)
-        {
-            setIsLDinner(false);
-        }
-        
         setFoodImg("");
         setFoodLink("");
         setFoodName("");
+        setSliding("leave");
+
+        setTimeout(()=>{
+            if(isHome)
+            {
+                setIsHome(false);
+                
+            }
+            if(isGoOut)
+            {
+                setIsGoOut(false);
+            }
+            if(isBreakfast)
+            {
+                setIsBreakfast(false);
+            }
+            if(isLDinner)
+            {
+                setIsLDinner(false);
+            }
+            setSliding("");
+        }, 380);
     }
 
     return(
         <>
             <div className="mainPage">
-                <h1 style={{textAlign:"center"}}>Food Generator</h1>
-
                 <div className="container">
                     <div className="row justify-content-center">
-                        <h3>Hungry?</h3>
+                        <h1 className="title" style={{textAlign:"center"}}>Food Generator</h1>
+                    </div>
+
+                    <div className="row justify-content-center">
+                        <h3 style={{margin:10, fontSize: 35}}>Hungry?</h3>
                     </div>
                     <div className="row justify-content-center">
-                        <h4>Let us decide....</h4>
+                        <h6>Let us decide....</h6>
                     </div>
 
                     <div className="row justify-content-center" style={{marginTop: 15}}>
                         <div className="col-3" style={{textAlign:"center"}}>
-                            <button className="pageBtn" onClick={Home}>Home</button>
+                            <button className="pageBtnL" onClick={Home}>Home</button>
+                            <div className="shadowL" />
                         </div> 
-                        <div className="col-1" style={{textAlign:"center"}}>
-                            <p style={{}}>OR</p>
+                        <div className="col-1 my-auto" style={{textAlign:"center"}}>
+                            <p>OR</p>
                         </div>
                         <div className="col-3" style={{textAlign:"center"}}>
-                            <button className="pageBtn" onClick={GoOut}>Go Out</button>
+                            <button className="pageBtnR" onClick={GoOut}>Go Out</button>
+                            <div className="shadowR" />
                         </div> 
                     </div>
                 </div>
@@ -200,22 +209,24 @@ export const MainPage:React.FC = (props:IProps) => {
 
             {isHome || isGoOut ?
             <>
-                <div className="upGrad1 pageAni"></div>
-                <div className="secondPage pageAni">
+                <div className={`upGrad1 pageAni ${isSlidingOut}`}></div>
+                <div className={`secondPage pageAni ${isSlidingOut}`}>
                     <div className="container">
                         <div className="row justify-content-center">
-                            <h3>Time of Day..?</h3>
+                            <h3 style={{marginTop:10}}>Time of Day..?</h3>
                         </div>
 
                         <div className="row justify-content-center" style={{marginTop: 40}}>
                             <div className="col-3" style={{textAlign:"center"}}>
-                                <button className="pageBtn" onClick={BreakfastBtn}>Breakfast</button>
+                                <button className="pageBtnL" onClick={BreakfastBtn}>Breakfast</button>
+                                <div className="shadowL" />
                             </div> 
-                            <div className="col-1" style={{textAlign:"center"}}>
-                                <p style={{}}>OR</p>
+                            <div className="col-1 my-auto" style={{textAlign:"center"}}>
+                                <p style={{verticalAlign:"middle"}}>OR</p>
                             </div>
                             <div className="col-3" style={{textAlign:"center"}}>
-                                <button className="pageBtn" onClick={LDinnerBtn}>Lunch / Dinner</button>
+                                <button className="pageBtnR" onClick={LDinnerBtn}>Lunch / Dinner</button>
+                                <div className="shadowR" />
                             </div>
                         </div>
                         {isSpinner ? 
@@ -225,6 +236,11 @@ export const MainPage:React.FC = (props:IProps) => {
                         :
                          <></>
                         }
+
+                        <div className="row justify-content-center">
+                            <button className="resetBtn" 
+                                onClick={Reset}>GO BACK</button>
+                        </div>
                         
                     </div>
                 </div>
@@ -235,15 +251,15 @@ export const MainPage:React.FC = (props:IProps) => {
 
             {(isBreakfast || isLDinner) && isHome ?
                 <>
-                    <div className="upGrad2 pageAni"></div>
-                    <div className="thirdPage pageAni">
+                    <div className={`upGrad2 pageAni ${isSlidingOut}`}></div>
+                    <div className={`thirdPage pageAni ${isSlidingOut}`}>
                         <div className="container">
                             <div className="row justify-content-center">
-                                <h3>Data:</h3>
+                                <h3 style={{marginTop:10}}>Your meal:</h3>
                             </div>
 
                             <div className="row justify-content-center">
-                                <p style={{marginTop: 20, textAlign: "left"}}>Your meal: {foodName}</p>
+                                <h4 style={{marginTop: 20, textAlign: "left"}}>{foodName}</h4>
                             </div>
 
                             {foodImg === "" ? 
@@ -257,7 +273,8 @@ export const MainPage:React.FC = (props:IProps) => {
                             
                             {foodLink != "null" ? 
                                 <div className="row justify-content-center">
-                                    <a href={foodLink}>Link to recipe (Click Me)</a>
+                                    <a href={foodLink} style={{margin: 6}}
+                                    target="_blank">Link to recipe (Click Me)</a>
                                 </div>
                             :
                                 <></>
@@ -277,28 +294,28 @@ export const MainPage:React.FC = (props:IProps) => {
 
             {(isBreakfast || isLDinner) && isGoOut ?
                 <>
-                    <div className="upGrad2 pageAni"></div>
-                    <div className="thirdPage pageAni">
+                    <div className={`upGrad2 pageAni ${isSlidingOut}`}></div>
+                    <div className={`thirdPage pageAni ${isSlidingOut}`}>
                         <div className="container">
                             <div className="row justify-content-center">
-                                <h3>Data:</h3>
+                                <h3>Your restaurant:</h3>
                             </div>
 
                             <div className="row justify-content-center">
-                                <p style={{marginTop: 20, textAlign: "left"}}>Restaurant Name: {foodName}</p>
+                                <h4 style={{marginTop: 20, textAlign: "left"}}>{foodName}</h4>
                             </div>
 
                             {foodImg === "" ? 
                                 <></>
                             :
                                 <div className="row justify-content-center">
-                                    <img className="foodImg"
+                                    <img className="foodImg" style={{margin: 6}}
                                     src={foodImg} alt="delicious pic"></img>
                                 </div>
                             }
 
                             <div className="row justify-content-center">
-                                <button className="resetBtn" 
+                                <button className="resetBtn" style={{margin: 6}}
                                 onClick={Reset}>RESET</button>
                             </div>
                         </div>
